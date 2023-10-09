@@ -4,9 +4,11 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from apps.home import blueprint
-from flask import render_template, request
+from apps import gen_frames
+from flask import render_template, request, Response
 from flask_login import login_required
 from jinja2 import TemplateNotFound
+import cv2
 
 
 @blueprint.route('/index')
@@ -14,6 +16,12 @@ from jinja2 import TemplateNotFound
 def index():
 
     return render_template('home/index.html', segment='index')
+
+@blueprint.route('/video_feed')
+@login_required
+def video_feed():
+    # print('accessed')
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @blueprint.route('/<template>')
